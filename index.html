@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>File to Voice Reader AI</title>
+    <meta
+      name="description"
+      content="Upload documents or screenshot images, extract written text, and listen to it with browser voice reading."
+    />
+    <link rel="stylesheet" href="styles.css?v=3" />
+  </head>
+  <body>
+    <canvas id="bgCanvas" class="bg-canvas" aria-hidden="true"></canvas>
+    <div class="bg-vignette" aria-hidden="true"></div>
+
+    <main class="app-shell">
+      <section class="workspace" aria-labelledby="app-title">
+        <div class="intro">
+          <p class="eyebrow">Private file to voice tool</p>
+          <h1 id="app-title">File to Voice Reader AI</h1>
+          <p>
+            Upload a PDF, DOCX, PPTX, text file, spreadsheet, or screenshot image.
+            The app reads the written content and turns it into voice.
+          </p>
+        </div>
+
+        <div class="privacy-note" role="note">
+          <strong>Your file stays on this device.</strong>
+          Text extraction and voice playback run in your browser. No file is saved by this page.
+        </div>
+
+        <div class="tool-grid">
+          <section class="panel upload-panel" aria-labelledby="upload-title">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">Step 1</p>
+                <h2 id="upload-title">Upload file</h2>
+              </div>
+              <button class="secondary-button" id="clearButton" type="button">Clear</button>
+            </div>
+
+            <label class="drop-zone" id="dropZone" for="fileInput">
+              <input
+                id="fileInput"
+                type="file"
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.md,.csv,.json,.html,.htm,.xml,.rtf,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tif,.tiff,image/*,application/pdf"
+              />
+              <span class="upload-icon" aria-hidden="true">+</span>
+              <span class="drop-title">Choose a file or drag it here</span>
+              <span class="drop-help">
+                Works best with PDF, DOCX, PPTX, TXT, XLSX, and clear screenshots.
+              </span>
+            </label>
+
+            <div class="file-card hidden" id="fileCard" aria-live="polite">
+              <div>
+                <p class="file-name" id="fileName"></p>
+                <p class="file-meta" id="fileMeta"></p>
+              </div>
+              <span class="file-badge" id="fileBadge">Ready</span>
+            </div>
+
+            <div class="settings">
+              <label for="languageSearch">
+                Search OCR language
+                <input
+                  id="languageSearch"
+                  type="search"
+                  autocomplete="off"
+                  placeholder="Search English, Hindi, Arabic, Bengali..."
+                />
+              </label>
+
+              <label for="ocrLanguage">
+                Choose OCR language
+                <select id="ocrLanguage">
+                </select>
+              </label>
+              <p class="language-hint" id="languageHint" aria-live="polite">
+                Type to filter languages, then choose the closest match for screenshots.
+              </p>
+
+              <label class="check-row" for="autoRead">
+                <input id="autoRead" type="checkbox" checked />
+                Start reading automatically after text is found
+              </label>
+            </div>
+
+            <div class="progress-wrap hidden" id="progressWrap">
+              <div class="progress-label">
+                <span id="progressText">Working...</span>
+                <span id="progressPercent">0%</span>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
+
+            <p class="status" id="statusMessage" role="status" aria-live="polite">
+              Waiting for a file.
+            </p>
+          </section>
+
+          <section class="panel reader-panel" aria-labelledby="reader-title">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">Step 2</p>
+                <h2 id="reader-title">Listen</h2>
+              </div>
+              <span class="word-count" id="wordCount">0 words</span>
+            </div>
+
+            <div class="voice-grid">
+              <label for="voiceSelect">
+                Voice
+                <select id="voiceSelect"></select>
+              </label>
+              <label for="rateRange">
+                Speed <span id="rateValue">1.0x</span>
+                <input id="rateRange" type="range" min="0.6" max="1.6" value="1" step="0.1" />
+              </label>
+              <label for="pitchRange">
+                Pitch <span id="pitchValue">1.0</span>
+                <input id="pitchRange" type="range" min="0.7" max="1.4" value="1" step="0.1" />
+              </label>
+            </div>
+
+            <div class="button-row" aria-label="Voice controls">
+              <button class="primary-button" id="readButton" type="button">Read all</button>
+              <button class="secondary-button" id="readSelectedButton" type="button">Read selected</button>
+              <button class="secondary-button" id="pauseButton" type="button">Pause</button>
+              <button class="secondary-button" id="resumeButton" type="button">Resume</button>
+              <button class="danger-button" id="stopButton" type="button">Stop</button>
+            </div>
+
+            <div class="reading-status" aria-live="polite">
+              <p class="now-label">Now reading</p>
+              <p id="nowReading">Nothing is playing yet.</p>
+              <div class="mini-progress">
+                <div id="speechProgress"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel manual-panel" aria-labelledby="manual-title">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-kicker">Write and listen</p>
+              <h2 id="manual-title">Type your own text</h2>
+            </div>
+            <span class="word-count" id="manualWordCount">0 words</span>
+          </div>
+          <textarea
+            id="manualText"
+            class="manual-text"
+            spellcheck="true"
+            placeholder="Write or paste any text here. Then press Read typed text to listen."
+          ></textarea>
+          <div class="button-row manual-actions">
+            <button class="primary-button" id="readManualButton" type="button">Read typed text</button>
+            <button class="secondary-button" id="sendManualButton" type="button">Move to extracted text</button>
+            <button class="secondary-button" id="clearManualButton" type="button">Clear writing</button>
+          </div>
+        </section>
+
+        <section class="panel text-panel" aria-labelledby="text-title">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-kicker">Extract and edit</p>
+              <h2 id="text-title">Extracted text</h2>
+            </div>
+            <div class="text-actions">
+              <button class="secondary-button" id="copyButton" type="button">Copy text</button>
+              <button class="secondary-button" id="downloadButton" type="button">Download .txt</button>
+            </div>
+          </div>
+          <textarea
+            id="textOutput"
+            spellcheck="false"
+            placeholder="The text found in your file will appear here. You can edit it before listening."
+          ></textarea>
+        </section>
+
+        <section class="support-strip" aria-label="Supported file types">
+          <div>
+            <strong>Reliable formats:</strong> PDF, DOCX, PPTX, XLSX, TXT, CSV, Markdown,
+            HTML, RTF, PNG, JPG, WEBP, BMP, TIFF.
+          </div>
+          <div>
+            <strong>Best effort:</strong> old binary DOC, PPT, and XLS files may need conversion
+            to DOCX, PPTX, or XLSX for clean text.
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script type="module" src="background.js?v=3"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
