@@ -2,6 +2,9 @@
 
 This website lets a user upload a document or screenshot, extracts the written text, and reads it aloud with the browser's voice engine.
 
+<img width="1883" height="946" alt="file to voice" src="https://github.com/user-attachments/assets/01803c24-77fe-4e3b-bf1f-dc7c6852e8fe" />
+
+
 ## How to use
 
 1. Open `index.html` in a browser, or run a small local server and open the page.
