@@ -98,3 +98,24 @@ transition:.8s;
 left:180%;
 }
 
+/* Floating Background */
+
+.bg-canvas::after{
+content:"";
+position:absolute;
+inset:0;
+background:
+radial-gradient(circle at 20% 40%,rgba(255,255,255,.18),transparent 30%),
+radial-gradient(circle at 80% 60%,rgba(188,168,121,.15),transparent 30%);
+animation:backgroundMove 18s linear infinite alternate;
+}
+
+@keyframes backgroundMove{
+0%{
+transform:translate(0,0);
+}
+100%{
+transform:translate(-25px,-20px);
+}
+}
+
