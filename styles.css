@@ -75,3 +75,26 @@ transform:translateX(200%);
 }
 }
 
+/* Button Ripple */
+
+.primary-button::before{
+content:"";
+position:absolute;
+top:0;
+left:-120%;
+width:80%;
+height:100%;
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.45),
+transparent
+);
+transform:skewX(-20deg);
+transition:.8s;
+}
+
+.primary-button:hover::before{
+left:180%;
+}
+
