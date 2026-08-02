@@ -577,3 +577,19 @@ grid-template-columns: 1fr;
 padding: 22px 14px;
 }
 }
+
+@media (max-width: 620px) {
+.panel-heading {
+display: grid;
+}
+
+.button-row button,
+.text-actions button {
+width: 100%;
+}
+
+.drop-zone {
+min-height: 200px;
+padding: 22px;
+}
+}
