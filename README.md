@@ -1,4 +1,4 @@
-# File to Voice Reader AI
+# File to Voice Reader AI 
 
 This website lets a user upload a document or screenshot, extracts the written text, and reads it aloud with the browser's voice engine.
 
