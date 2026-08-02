@@ -1,74 +1,4 @@
-@keyframes fadePage{
-from{
-opacity:0;
-}
-to{
-opacity:1;
-}
-
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes floatWorkspace{
-0%,100%{
-transform:translateY(0px);
-}
-50%{
-transform:translateY(-4px);
-}
-}
-
-@keyframes glassFloat{
-0%,100%{
-transform:translateY(0px);
-}
-50%{
-transform:translateY(-5px);
-}
-}
-
-@keyframes pulseIcon{
-0%{
-transform:scale(1);
-box-shadow:0 0 0 rgba(188,168,121,0);
-}
-50%{
-transform:scale(1.08);
-box-shadow:0 0 20px rgba(188,168,121,.35);
-}
-100%{
-transform:scale(1);
-box-shadow:0 0 0 rgba(188,168,121,0);
-}
-}
-
-@keyframes cardSlide{
-from{
-opacity:0;
-transform:translateY(18px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes shimmer{
-0%{
-transform:translateX(-100%);
-}
-100%{
-transform:translateX(200%);
+200%);
 }
 }
 
@@ -119,13 +49,7 @@ transform:translate(-25px,-20px);
 /* Progress */
 
 .progress-fill{
-background-size:200% 100%;
-background-image:
-linear-gradient(
-90deg,
-var(--accent),
-#d8c395,
-var(--accent)
+background-size
 );
 animation:progressGlow 3s linear infinite;
 }
