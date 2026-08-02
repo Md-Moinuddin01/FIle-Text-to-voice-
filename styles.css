@@ -129,12 +129,3 @@ var(--accent)
 );
 animation:progressGlow 3s linear infinite;
 }
-
-@keyframes progressGlow{
-0%{
-background-position:0%;
-}
-100%{
-background-position:200%;
-}
-}
